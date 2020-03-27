@@ -4,7 +4,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.TextArea;
-import ru.hse.edu.myurachinskiy.models.QwertyRussianKeyboard;
+import ru.hse.edu.myurachinskiy.models.keyboards.Keyboard;
 import ru.hse.edu.myurachinskiy.models.Point;
 import ru.hse.edu.myurachinskiy.utils.WifiCommandsProvider;
 import java.net.URL;
@@ -33,6 +33,6 @@ public class KeyboardController implements Initializable {
     private TextArea text;
 
     private Point cursor;
-    private QwertyRussianKeyboard keyboard;
+    private Keyboard keyboard;
     private WifiCommandsProvider commandsProvider;
 }
