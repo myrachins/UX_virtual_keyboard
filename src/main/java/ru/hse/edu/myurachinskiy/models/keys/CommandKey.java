@@ -2,7 +2,7 @@ package ru.hse.edu.myurachinskiy.models.keys;
 
 import ru.hse.edu.myurachinskiy.models.keyboards.Keyboard;
 
-class CommandKey extends Key {
+public class CommandKey extends Key {
     public CommandKey(COMMAND command) {
         super(command.command);
         this.command = command;

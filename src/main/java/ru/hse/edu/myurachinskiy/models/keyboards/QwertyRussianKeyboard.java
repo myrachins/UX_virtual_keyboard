@@ -1,14 +1,21 @@
 package ru.hse.edu.myurachinskiy.models.keyboards;
 
+import ru.hse.edu.myurachinskiy.models.keys.EmptyKey;
+import ru.hse.edu.myurachinskiy.models.keys.Key;
+
 public class QwertyRussianKeyboard extends Keyboard {
     public QwertyRussianKeyboard() {
-//        this.keyboard =
-//                {
-//                    {new Key(1, false), new Key("1", "!"),
-//                     new Key("2", "@"), new Key("3", "#"),
-//                     new Key("3", "#"), new Key("4", "$"),
-//                     new Key("5", "%"), new Key("6", "^")
-//                    }
-//                }; // TODO: replace with russian keyboard
-    }
+        // TODO: replace with russian keyboard
+        this.keyboard = new Key[][]
+                {
+                    {
+                        new EmptyKey(), new EmptyKey(),
+                        new EmptyKey(), new EmptyKey()
+                    },
+                    {
+                            new EmptyKey(), new EmptyKey(),
+                            new EmptyKey(), new EmptyKey()
+                    }
+                };
+        }
 }

@@ -2,7 +2,7 @@ package ru.hse.edu.myurachinskiy.models.keys;
 
 import ru.hse.edu.myurachinskiy.models.keyboards.Keyboard;
 
-class EmptyKey extends Key {
+public class EmptyKey extends Key {
     public EmptyKey() {
         super("");
     }

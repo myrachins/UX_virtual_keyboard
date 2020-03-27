@@ -2,7 +2,7 @@ package ru.hse.edu.myurachinskiy.models.keys;
 
 import ru.hse.edu.myurachinskiy.models.keyboards.Keyboard;
 
-class OrdinaryKey extends Key {
+public class OrdinaryKey extends Key {
     public OrdinaryKey(String key) {
         super(key);
     }
