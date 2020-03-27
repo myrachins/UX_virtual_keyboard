@@ -1,6 +1,6 @@
 package ru.hse.edu.myurachinskiy.models;
 
-public class DvorakKeyboard {
+public class QwertyRussianKeyboard {
     public void pressButton(int row, int col) {
         Key key = getKey(row, col);
         // TODO: Implement method
@@ -52,5 +52,5 @@ public class DvorakKeyboard {
                      new Key("3", "#"), new Key("4", "$"),
                      new Key("5", "%"), new Key("6", "^")
                     }
-            }; // TODO: finish keyboard
+            }; // TODO: replace with russian keyboard
 }
