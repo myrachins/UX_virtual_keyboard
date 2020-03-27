@@ -1,11 +1,12 @@
 package ru.hse.edu.myurachinskiy;
 
 import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
-import javafx.geometry.Pos;
+import javafx.scene.Group;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Label;
+import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
+import javafx.fxml.FXMLLoader;
 
 public class Main extends Application {
     public static void main(String[] args) {
@@ -13,15 +14,21 @@ public class Main extends Application {
     }
 
     @Override
-    public void start(Stage primaryStage) {
-        FXMLLoader loader = new FXMLLoader();
-        loader.setController(new MainSceneController());
-        loader.setLocation(getClass().getResource("keyboard-layout.fxml"));
-        primaryStage.setTitle("Hello world Application");
-        /*Label helloWorldLabel = new Label("Hello world!");
-        helloWorldLabel.setAlignment(Pos.CENTER);
-        Scene primaryScene = new Scene(helloWorldLabel);
-        primaryStage.setScene(primaryScene);
-        */primaryStage.show();
+    public void start(Stage primaryStage) throws Exception {
+        Parent canvas = FXMLLoader.load(getClass().getResource("/views/keyboard.fxml"));
+
+        BorderPane root = new BorderPane();
+        root.setCenter(canvas);
+
+        Group group = new Group(root);
+        Scene scene = new Scene(group);
+
+        root.prefHeightProperty().bind(scene.heightProperty());
+        root.prefWidthProperty().bind(scene.widthProperty());
+
+        primaryStage.setScene(scene);
+
+        primaryStage.setOnCloseRequest(e -> System.exit(0));
+        primaryStage.show();
     }
 }
