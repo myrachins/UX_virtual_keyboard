@@ -2,7 +2,7 @@ package ru.hse.edu.myurachinskiy.models.keys;
 
 import ru.hse.edu.myurachinskiy.models.keyboards.Keyboard;
 
-class OrdinaryKey extends Key {
+public class OrdinaryKey extends Key {
     public OrdinaryKey(String key) {
         super(key);
     }
@@ -17,6 +17,9 @@ class OrdinaryKey extends Key {
 
     @Override
     public void pressKey(Keyboard keyboard) {
-        // TODO: Implement method
+        if (keyboard.isShiftPressed())
+        	keyboard.setText(keyboard.getText() + this.shiftedKey);
+        else
+			keyboard.setText(keyboard.getText() + this.key);
     }
 }

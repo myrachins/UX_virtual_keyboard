@@ -60,4 +60,16 @@ public abstract class Keyboard {
     protected boolean isShiftPressed;
 
     protected Key[][] keyboard;
+    
+    public Key[][] getKeyboard() {
+        return keyboard;
+    }
+    
+    public void setKeyboard(Key[][] keyboard) {
+        this.keyboard = keyboard;
+    }
+	
+	public void setShiftPressed(boolean shiftPressed) {
+		isShiftPressed = shiftPressed;
+	}
 }

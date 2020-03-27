@@ -2,6 +2,8 @@ package ru.hse.edu.myurachinskiy.models.keys;
 
 import ru.hse.edu.myurachinskiy.models.keyboards.Keyboard;
 
+import java.util.Optional;
+
 class CommandKey extends Key {
     public CommandKey(COMMAND command) {
         super(command.command);
@@ -15,19 +17,24 @@ class CommandKey extends Key {
 
     @Override
     public void pressKey(Keyboard keyboard) {
-        // TODO: Implement method
         switch (command) {
-            case DELETE:
+            case BACKSPACE:
+            	keyboard.setText(Optional.ofNullable(keyboard.getText())
+					.filter(sStr -> sStr.length() != 0)
+					.map(sStr -> sStr.substring(0, sStr.length() - 1))
+					.orElse(keyboard.getText()));
             case TAB:
+            	keyboard.setText(keyboard.getText() + "\t");
             case CTRL:
             case SHIFT:
+            	keyboard.setShiftPressed(!keyboard.isShiftPressed());
             case ENTER:
         }
     }
     private COMMAND command;
 
     enum COMMAND {
-        DELETE("DELETE"), TAB("TAB"), CTRL("CTRL"), SHIFT("SHIFT"), ENTER("ENTER");
+        BACKSPACE("BACKSPACE"), TAB("TAB"), CTRL("CTRL"), SHIFT("SHIFT"), ENTER("ENTER");
 
         COMMAND(String command) {
             this.command = command;
