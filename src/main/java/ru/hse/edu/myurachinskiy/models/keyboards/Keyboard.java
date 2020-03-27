@@ -1,9 +1,11 @@
-package ru.hse.edu.myurachinskiy.models;
+package ru.hse.edu.myurachinskiy.models.keyboards;
 
-public class DvorakKeyboard {
+import ru.hse.edu.myurachinskiy.models.keys.Key;
+
+public abstract class Keyboard {
     public void pressButton(int row, int col) {
         Key key = getKey(row, col);
-        // TODO: Implement method
+        key.pressKey(this);
     }
 
     public Key getKey(int row, int col) {
@@ -16,8 +18,20 @@ public class DvorakKeyboard {
         return keyboard[row][col];
     }
 
-    public String GetText() {
+    public String getText() {
         return text;
+    }
+
+    public void setText(String text) {
+        this.text = text;
+    }
+
+    public boolean isShiftPressed() {
+        return isShiftPressed;
+    }
+
+    public void pressShift() {
+        isShiftPressed = !isShiftPressed;
     }
 
     public int getRowsNumber() {
@@ -42,15 +56,8 @@ public class DvorakKeyboard {
         return sum;
     }
 
-    private String text;
-    private boolean isShiftPressed;
+    protected String text;
+    protected boolean isShiftPressed;
 
-    private Key[][] keyboard =
-            {
-                    {new Key(1, false), new Key("1", "!"),
-                     new Key("2", "@"), new Key("3", "#"),
-                     new Key("3", "#"), new Key("4", "$"),
-                     new Key("5", "%"), new Key("6", "^")
-                    }
-            }; // TODO: finish keyboard
+    protected Key[][] keyboard;
 }
