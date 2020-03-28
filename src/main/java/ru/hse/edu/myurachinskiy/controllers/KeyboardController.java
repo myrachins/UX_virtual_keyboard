@@ -10,7 +10,8 @@ import ru.hse.edu.myurachinskiy.models.keyboards.Keyboard;
 import ru.hse.edu.myurachinskiy.models.Point;
 import ru.hse.edu.myurachinskiy.models.keyboards.QwertyRussianKeyboard;
 import ru.hse.edu.myurachinskiy.models.keys.Key;
-import ru.hse.edu.myurachinskiy.utils.WifiCommandsProvider;
+import ru.hse.edu.myurachinskiy.utils.AppSettings;
+import ru.hse.edu.myurachinskiy.utils.CommandsProvider;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -22,24 +23,51 @@ public class KeyboardController implements Initializable {
 
         drawKeyboard();
         drawPoint();
+        printText();
 
-        this.commandsProvider = new WifiCommandsProvider(this);
+        this.commandsProvider = new CommandsProvider(this);
     }
 
     public void moveCursor(double xDelta, double yDelta) {
         cursor.setX(cursor.getX() + xDelta);
         cursor.setY(cursor.getY() + yDelta);
-        // TODO: Move cursor on canvas
+        drawPoint();
     }
 
     public void press() {
-        // TODO: Implement method
+        int row = (int) (keyboard.getRowsNumber() * cursor.getY() / canvas.getHeight());
+        int col = getPressedColumn(row);
+        keyboard.pressButton(row, col);
+        printText();
+        // TODO: highlight pressed key
+    }
+
+    private int getPressedColumn(int row) {
+        double rowsWidth = keyboard.sumRowWidth(row);
+        double scale = canvas.getWidth() / rowsWidth;
+        double prevKeyRightBord = 0;
+
+        for (int col = 0; col < keyboard.getColumnsNumber(row); ++col) {
+            Key currentKey = keyboard.getKey(row, col);
+            double keyWidth = currentKey.getWidth() * scale;
+            if (cursor.getX() >= prevKeyRightBord && cursor.getX() <= prevKeyRightBord + keyWidth) {
+                return col;
+            }
+            prevKeyRightBord += keyWidth;
+        }
+        throw new IllegalArgumentException("x value is invalid");
+    }
+
+    private void printText() {
+        text.setText(keyboard.getText());
     }
 
     private void drawPoint() {
         GraphicsContext gc = canvas.getGraphicsContext2D();
         gc.setFill(Color.BLACK);
-        gc.fillOval(cursor.getX(), cursor.getY(), 1, 1);
+        gc.fillOval(cursor.getX() - AppSettings.POINT_RADIUS,
+                cursor.getY() - AppSettings.POINT_RADIUS,
+                AppSettings.POINT_RADIUS * 2, AppSettings.POINT_RADIUS * 2);
     }
 
     private void drawKeyboard() {
@@ -54,7 +82,7 @@ public class KeyboardController implements Initializable {
                 double keyWidth = currentKey.getWidth() * scale;
                 drawBorder(prevKeyRightBord, row * keyHeight, keyWidth, keyHeight);
                 drawKey(currentKey, prevKeyRightBord, row * keyHeight, keyWidth, keyHeight);
-                prevKeyRightBord = prevKeyRightBord + keyWidth;
+                prevKeyRightBord += keyWidth;
             }
         }
     }
@@ -80,5 +108,5 @@ public class KeyboardController implements Initializable {
 
     private Point cursor;
     private Keyboard keyboard;
-    private WifiCommandsProvider commandsProvider;
+    private CommandsProvider commandsProvider;
 }
