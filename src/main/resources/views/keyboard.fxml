@@ -6,6 +6,6 @@
 
 <VBox xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="ru.hse.edu.myurachinskiy.controllers.KeyboardController">
-    <TextArea fx:id="text" text="TEXT"/>
+    <TextArea fx:id="text" editable="false"/>
     <Canvas fx:id="canvas" width="300" height="300"/>
 </VBox>
