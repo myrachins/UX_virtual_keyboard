@@ -35,7 +35,8 @@ public class KeyboardController implements Initializable {
     }
 
     public void press() {
-        int row = (int) (keyboard.getRowsNumber() * cursor.getY() / canvas.getHeight());
+        int row = Math.min((int) (keyboard.getRowsNumber() * cursor.getY() / canvas.getHeight()),
+                keyboard.getRowsNumber() - 1);
         int col = getPressedColumn(row);
         keyboard.pressButton(row, col);
         printText();
