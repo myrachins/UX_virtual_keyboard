@@ -4,7 +4,7 @@ import ru.hse.edu.myurachinskiy.models.keyboards.Keyboard;
 
 import java.util.Optional;
 
-class CommandKey extends Key {
+public class CommandKey extends Key {
     public CommandKey(COMMAND command) {
         super(command.command);
         this.command = command;
@@ -19,22 +19,28 @@ class CommandKey extends Key {
     public void pressKey(Keyboard keyboard) {
         switch (command) {
             case BACKSPACE:
-            	keyboard.setText(Optional.ofNullable(keyboard.getText())
-					.filter(sStr -> sStr.length() != 0)
-					.map(sStr -> sStr.substring(0, sStr.length() - 1))
-					.orElse(keyboard.getText()));
+                if (keyboard.getText().length() > 0)
+                    keyboard.setText(keyboard.getText().substring(0, keyboard.getText().length() - 1));
+                break;
             case TAB:
             	keyboard.setText(keyboard.getText() + "\t");
+            	break;
             case CTRL:
+                break;
             case SHIFT:
             	keyboard.setShiftPressed(!keyboard.isShiftPressed());
+            	break;
             case ENTER:
+                keyboard.setText(keyboard.getText() + "\n");
+                break;
+            case SPACE:
+                keyboard.setText(keyboard.getText() + " ");
         }
     }
     private COMMAND command;
 
-    enum COMMAND {
-        BACKSPACE("BACKSPACE"), TAB("TAB"), CTRL("CTRL"), SHIFT("SHIFT"), ENTER("ENTER");
+    public enum COMMAND {
+        BACKSPACE("BACKSPACE"), TAB("TAB"), CTRL("CTRL"), SHIFT("SHIFT"), ENTER("ENTER"), SPACE("SPACE");
 
         COMMAND(String command) {
             this.command = command;

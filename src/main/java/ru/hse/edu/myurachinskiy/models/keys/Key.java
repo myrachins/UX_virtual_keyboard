@@ -12,6 +12,7 @@ public abstract class Key {
     public Key(String key, String shiftedKey) {
         this.key = key;
         this.shiftedKey = shiftedKey;
+        this.width = 1.0;
     }
 
     public Key(String key, String shiftedKey, double width) {

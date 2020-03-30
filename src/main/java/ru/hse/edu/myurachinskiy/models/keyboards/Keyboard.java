@@ -56,7 +56,7 @@ public abstract class Keyboard {
         return sum;
     }
 
-    protected String text;
+    protected String text = "";
     protected boolean isShiftPressed;
 
     protected Key[][] keyboard;

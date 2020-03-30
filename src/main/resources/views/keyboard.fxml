@@ -4,8 +4,9 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.control.TextArea?>
 
+<?import javafx.scene.layout.AnchorPane?>
 <VBox xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="ru.hse.edu.myurachinskiy.controllers.KeyboardController">
-    <TextArea fx:id="text" editable="false"/>
-    <Canvas fx:id="canvas" width="300" height="300"/>
+    <TextArea fx:id="text" editable="true" minHeight="50"/>
+    <AnchorPane fx:id="anchorPane" minWidth="800" minHeight="200" maxWidth="800" maxHeight="200"/>
 </VBox>
