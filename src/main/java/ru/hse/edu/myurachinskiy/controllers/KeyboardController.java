@@ -39,16 +39,24 @@ public class KeyboardController implements Initializable {
     }
 
     public void moveCursor(double xDelta, double yDelta) {
-        PointerInfo pointerInfo = MouseInfo.getPointerInfo();
-        Point point = pointerInfo.getLocation();
-        int x = (int) point.getX();
-        int y = (int) point.getY();
-        robot.mouseMove(x + (int)xDelta, y + (int)yDelta);
+        if (robot != null) {
+            PointerInfo pointerInfo = MouseInfo.getPointerInfo();
+            Point point = pointerInfo.getLocation();
+            int x = (int) point.getX();
+            int y = (int) point.getY();
+            robot.mouseMove(x + (int)xDelta, y + (int)yDelta);
+        } else {
+            throw new NullPointerException("robot in NULL");
+        }
     }
     
     public void pressMouse() {
-        robot.mousePress(InputEvent.BUTTON1_MASK);
-        robot.mouseRelease(InputEvent.BUTTON1_MASK);
+        if (robot != null) {
+            robot.mousePress(InputEvent.BUTTON1_MASK);
+            robot.mouseRelease(InputEvent.BUTTON1_MASK);
+        } else {
+            throw new NullPointerException("robot is NULL");
+        }
     }
 
     private int getPressedColumn(int row) {
@@ -73,7 +81,8 @@ public class KeyboardController implements Initializable {
 
     private void drawKeyboard() {
         double keyHeight = this.anchorPane.getMaxHeight() / keyboard.getRowsNumber();
-        List<Button> keyBtnList = new ArrayList<Button>();
+        List<Button> keyBtnList = new ArrayList<>();
+        
         for (int row = 0; row < keyboard.getRowsNumber(); ++row) {
             double rowsWidth = keyboard.sumRowWidth(row);
             double scale = this.anchorPane.getMaxWidth() / rowsWidth;
@@ -83,19 +92,21 @@ public class KeyboardController implements Initializable {
                 double keyWidth = currentKey.getWidth() * scale;
                 Button currentKeyBtn = new Button(currentKey.getKey());
                 currentKeyBtn.setMinHeight(keyHeight);
+                
                 AnchorPane.setBottomAnchor(currentKeyBtn, (keyboard.getRowsNumber() - row - 1) * keyHeight);
                 AnchorPane.setLeftAnchor(currentKeyBtn, prevKeyRightBord);
                 AnchorPane.setRightAnchor(currentKeyBtn, anchorPane.getMaxWidth() - keyWidth - prevKeyRightBord);
+                
                 currentKeyBtn.setOnMousePressed(event -> {
                     currentKey.pressKey(keyboard);
                     text.setText(keyboard.getText());
                 });
+                
                 keyBtnList.add(currentKeyBtn);
                 prevKeyRightBord += keyWidth;
             }
         }
         this.anchorPane.getChildren().addAll(keyBtnList);
-        
     }
 
     @FXML
