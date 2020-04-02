@@ -11,11 +11,13 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import ru.hse.edu.myurachinskiy.models.keyboards.Keyboard;
-import ru.hse.edu.myurachinskiy.models.Point;
 import ru.hse.edu.myurachinskiy.models.keyboards.QwertyRussianKeyboard;
 import ru.hse.edu.myurachinskiy.models.keys.Key;
 import ru.hse.edu.myurachinskiy.utils.AppSettings;
 import ru.hse.edu.myurachinskiy.utils.CommandsProvider;
+
+import java.awt.*;
+import java.awt.event.InputEvent;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -24,28 +26,30 @@ import java.util.ResourceBundle;
 public class KeyboardController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        //this.cursor = new Point(canvas.getWidth() / 2, canvas.getHeight() / 2);
         this.keyboard = new QwertyRussianKeyboard();
-        
-        drawKeyboard();
-        printText();
+        try {
+            robot = new Robot();
+            drawKeyboard();
+            printText();
 
-        this.commandsProvider = new CommandsProvider(this);
+            this.commandsProvider = new CommandsProvider(this);
+        } catch (AWTException e) {
+            e.printStackTrace();
+        }
     }
 
     public void moveCursor(double xDelta, double yDelta) {
-        cursor.setX(cursor.getX() + xDelta);
-        cursor.setY(cursor.getY() + yDelta);
+        PointerInfo pointerInfo = MouseInfo.getPointerInfo();
+        Point point = pointerInfo.getLocation();
+        int x = (int) point.getX();
+        int y = (int) point.getY();
+        robot.mouseMove(x + (int)xDelta, y + (int)yDelta);
     }
-
-    /*public void press() {
-        int row = Math.min((int) (keyboard.getRowsNumber() * cursor.getY() / canvas.getHeight()),
-                keyboard.getRowsNumber() - 1);
-        int col = getPressedColumn(row);
-        keyboard.pressButton(row, col);
-        printText();
-        // TODO: highlight pressed key
-    }*/
+    
+    public void pressMouse() {
+        robot.mousePress(InputEvent.BUTTON1_MASK);
+        robot.mouseRelease(InputEvent.BUTTON1_MASK);
+    }
 
     private int getPressedColumn(int row) {
         double rowsWidth = keyboard.sumRowWidth(row);
@@ -67,14 +71,6 @@ public class KeyboardController implements Initializable {
         text.setText(keyboard.getText());
     }
 
-    /*private void drawPoint() {
-        GraphicsContext gc = canvas.getGraphicsContext2D();
-        gc.setFill(Color.BLACK);
-        gc.fillOval(cursor.getX() - AppSettings.POINT_RADIUS,
-                cursor.getY() - AppSettings.POINT_RADIUS,
-                AppSettings.POINT_RADIUS * 2, AppSettings.POINT_RADIUS * 2);
-    }*/
-
     private void drawKeyboard() {
         double keyHeight = this.anchorPane.getMaxHeight() / keyboard.getRowsNumber();
         List<Button> keyBtnList = new ArrayList<Button>();
@@ -94,8 +90,6 @@ public class KeyboardController implements Initializable {
                     currentKey.pressKey(keyboard);
                     text.setText(keyboard.getText());
                 });
-                //drawBorder(prevKeyRightBord, row * keyHeight, keyWidth, keyHeight);
-                //drawKey(currentKey, prevKeyRightBord, row * keyHeight, keyWidth, keyHeight);
                 keyBtnList.add(currentKeyBtn);
                 prevKeyRightBord += keyWidth;
             }
@@ -104,25 +98,13 @@ public class KeyboardController implements Initializable {
         
     }
 
-    /*private void drawBorder(double x, double y, double w, double h) {
-        GraphicsContext gc = canvas.getGraphicsContext2D();
-        gc.setStroke(Color.GREY);
-        gc.setLineWidth(4);
-        gc.strokeRoundRect(x, y, w, h, 0, 0);
-    }
-
-    private void drawKey(Key key, double xKey, double yKey, double keyWidth, double keyHeight) {
-        GraphicsContext gc = canvas.getGraphicsContext2D();
-        gc.setStroke(Color.BLACK);
-        gc.setLineWidth(2);
-        gc.strokeText(key.getKey(), xKey, yKey, keyWidth); // TODO: Print shifted text also
-    }*/
-
     @FXML
     private TextArea text;
     @FXML
     private AnchorPane anchorPane;
 
+    private Robot robot;
+    
     private Point cursor;
     private Keyboard keyboard;
     private CommandsProvider commandsProvider;
