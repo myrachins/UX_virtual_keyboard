@@ -1,23 +1,18 @@
 package ru.hse.edu.myurachinskiy.controllers;
 
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.canvas.Canvas;
-import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.paint.Color;
 import ru.hse.edu.myurachinskiy.models.keyboards.Keyboard;
 import ru.hse.edu.myurachinskiy.models.keyboards.QwertyRussianKeyboard;
 import ru.hse.edu.myurachinskiy.models.keys.Key;
-import ru.hse.edu.myurachinskiy.utils.AppSettings;
 import ru.hse.edu.myurachinskiy.utils.CommandsProvider;
 
 import java.awt.*;
 import java.awt.event.InputEvent;
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -33,7 +28,7 @@ public class KeyboardController implements Initializable {
             printText();
 
             this.commandsProvider = new CommandsProvider(this);
-        } catch (AWTException e) {
+        } catch (AWTException | IOException e) {
             e.printStackTrace();
         }
     }
