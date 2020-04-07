@@ -8,7 +8,7 @@ public class CommandsProvider {
     public CommandsProvider(KeyboardController keyboardController) throws IOException {
         this.keyboardController = keyboardController;
         this.wifiListener = new WifiListener(accelerometerData -> {
-            if (accelerometerData.getZ() < AppSettings.Z_EPSILON) {
+            if (accelerometerData.getZ() > AppSettings.Z_EPSILON) {
                 keyboardController.moveCursor(accelerometerData.getX() * AppSettings.COORDINATE_SCALE,
                                         accelerometerData.getY() * AppSettings.COORDINATE_SCALE);
             } else {
