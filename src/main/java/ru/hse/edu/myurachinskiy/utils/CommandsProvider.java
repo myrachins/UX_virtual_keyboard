@@ -8,9 +8,9 @@ public class CommandsProvider {
     public CommandsProvider(KeyboardController keyboardController) throws IOException {
         this.keyboardController = keyboardController;
         this.wifiListener = new WifiListener(accelerometerData -> {
-            // TODO: Make moves smoother
-            if (Math.abs(accelerometerData.getZ() - AppSettings.Z_EPSILON) < 0) {
-                keyboardController.moveCursor(accelerometerData.getX(), accelerometerData.getY());
+            if (accelerometerData.getZ() < AppSettings.Z_EPSILON) {
+                keyboardController.moveCursor(accelerometerData.getX() * AppSettings.COORDINATE_SCALE,
+                                        accelerometerData.getY() * AppSettings.COORDINATE_SCALE);
             } else {
                 keyboardController.pressMouse();
             }
