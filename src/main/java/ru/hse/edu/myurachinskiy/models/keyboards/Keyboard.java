@@ -55,8 +55,14 @@ public abstract class Keyboard {
         }
         return sum;
     }
+    
+    public void changeLastWordText(String newLastWord) {
+        text = text.substring(0, text.length() - lastWord.length()) + newLastWord + " ";
+        lastWord = "";
+    }
 
     protected String text = "";
+    protected String lastWord = "";
     protected boolean isShiftPressed;
 
     protected Key[][] keyboard;
@@ -72,4 +78,12 @@ public abstract class Keyboard {
 	public void setShiftPressed(boolean shiftPressed) {
 		isShiftPressed = shiftPressed;
 	}
+    
+    public String getLastWord() {
+        return lastWord;
+    }
+    
+    public void setLastWord(String lastWord) {
+        this.lastWord = lastWord;
+    }
 }

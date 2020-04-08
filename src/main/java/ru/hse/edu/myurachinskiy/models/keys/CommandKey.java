@@ -35,6 +35,7 @@ public class CommandKey extends Key {
                 break;
             case SPACE:
                 keyboard.setText(keyboard.getText() + " ");
+                keyboard.setLastWord("");
         }
     }
     private COMMAND command;

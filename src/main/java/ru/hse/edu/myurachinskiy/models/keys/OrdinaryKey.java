@@ -17,9 +17,12 @@ public class OrdinaryKey extends Key {
 
     @Override
     public void pressKey(Keyboard keyboard) {
-        if (keyboard.isShiftPressed())
-        	keyboard.setText(keyboard.getText() + this.shiftedKey);
-        else
-			keyboard.setText(keyboard.getText() + this.key);
+        if (keyboard.isShiftPressed()) {
+            keyboard.setText(keyboard.getText() + this.shiftedKey);
+            keyboard.setLastWord(keyboard.getLastWord() + this.shiftedKey);
+        } else {
+            keyboard.setText(keyboard.getText() + this.key);
+            keyboard.setLastWord(keyboard.getLastWord() + this.key);
+        }
     }
 }
