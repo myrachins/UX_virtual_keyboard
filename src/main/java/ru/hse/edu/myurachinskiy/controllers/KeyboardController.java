@@ -8,6 +8,7 @@ import javafx.scene.layout.AnchorPane;
 import ru.hse.edu.myurachinskiy.models.keyboards.Keyboard;
 import ru.hse.edu.myurachinskiy.models.keyboards.QwertyRussianKeyboard;
 import ru.hse.edu.myurachinskiy.models.keys.Key;
+import ru.hse.edu.myurachinskiy.models.keys.TipKey;
 import ru.hse.edu.myurachinskiy.predicativeSystem.DictionaryPredictiveSystem;
 import ru.hse.edu.myurachinskiy.predicativeSystem.OurDictionaryPersister;
 import ru.hse.edu.myurachinskiy.predicativeSystem.PredictiveTextSystem;
@@ -34,7 +35,7 @@ public class KeyboardController implements Initializable {
             try {
                 predictiveTextSystem.fill(OurDictionaryPersister
                     .newInstance(new FileInputStream(new File("M:\\java HW\\ux-keyboard\\src\\main" +
-                        "\\resources\\shortdict.txt")), StandardCharsets.UTF_8));
+                        "\\resources\\dict.opcorpora.txt")), StandardCharsets.UTF_8));
     
             } catch (Exception e) {
                 System.out.println("Problems with dict");
@@ -110,6 +111,10 @@ public class KeyboardController implements Initializable {
                 AnchorPane.setBottomAnchor(currentKeyBtn, (keyboard.getRowsNumber() - row - 1) * keyHeight);
                 AnchorPane.setLeftAnchor(currentKeyBtn, prevKeyRightBord);
                 AnchorPane.setRightAnchor(currentKeyBtn, anchorPane.getMaxWidth() - keyWidth - prevKeyRightBord);
+                
+                if (currentKey instanceof TipKey) {
+                    ((TipKey) currentKey).setButtonKey(currentKeyBtn);
+                }
                 
                 currentKeyBtn.setOnMousePressed(event -> {
                     currentKey.pressKey(keyboard);

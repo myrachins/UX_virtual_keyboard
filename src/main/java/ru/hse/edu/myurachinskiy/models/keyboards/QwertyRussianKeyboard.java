@@ -63,9 +63,19 @@ public class QwertyRussianKeyboard extends Keyboard {
 	
 	public void changeTips() {
     	String pattern = "";
-    	if (text.length() >= 3) {
-    		//pattern = text.substring(0, text.length() - 3) + "(?i)[а-я]{3}";
-			pattern = "["+text+"]";
+    	if (lastWord.length() >= 3) {
+    		for (int i = 0; i < lastWord.length() - 3; i++) {
+    			Character currentChar = lastWord.charAt(i);
+    			if (Character.isUpperCase(currentChar))
+					pattern += "[" + lastWord.charAt(i) + Character.toLowerCase(lastWord.charAt(i)) + "]";
+				else {
+					pattern += "[" + lastWord.charAt(i) + Character.toUpperCase(lastWord.charAt(i)) + "]";
+				}
+			}
+    		String anyString = "[йцукенгшщзхъэждлорпавыфячсмитьбюёЙЦУКЕНГШЩЗХЪЭЖДЛОРПАВЫФЯЧСМИТЬБЮЁ]";
+			pattern += anyString;
+			pattern += anyString;
+			pattern += anyString;
 		}
     	List<String> tips = predictiveTextSystem.getWordsByPattern(pattern);
     	int i = 0;

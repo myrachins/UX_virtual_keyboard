@@ -47,7 +47,7 @@ public class DictionaryPredictiveSystem extends Dictionary
 				if (childNode != null) {
 					if (depth == pattern.size() - 1) { // ...и мы достигли конца слова
 						// Добавляем слово в результирующий набор
-						if (childNode.frequency > 0)
+						if (childNode.frequency >= 0)
 							wordforms.add(prefix + childNode.character);
 					} else { // иначе - двигаемся дальше по шаблону
 						((PSNode) childNode).getWordwormsByPattern(
