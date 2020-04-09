@@ -35,7 +35,7 @@ public class KeyboardController implements Initializable {
             try {
                 predictiveTextSystem.fill(OurDictionaryPersister
                     .newInstance(new FileInputStream(new File("M:\\java HW\\ux-keyboard\\src\\main" +
-                        "\\resources\\dict.opcorpora.txt")), StandardCharsets.UTF_8));
+                        "\\resources\\unigrams.txt")), StandardCharsets.UTF_8));
     
             } catch (Exception e) {
                 System.out.println("Problems with dict");

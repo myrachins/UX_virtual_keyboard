@@ -30,9 +30,9 @@ public class OurDictionaryPersister implements DictionaryPersister {
 		String line;
 		while ((line = br.readLine()) != null) {
 			if(!line.isEmpty()) {
-				String[] data = line.split(" ");
+				String[] data = line.split("\t");
 				if (data.length != 1)
-					res.words.put(data[0], 1);
+					res.words.put(data[0], Integer.parseInt(data[1]));
 			}
 			
 		}
