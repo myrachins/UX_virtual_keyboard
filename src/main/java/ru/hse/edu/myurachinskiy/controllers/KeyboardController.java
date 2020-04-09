@@ -8,12 +8,19 @@ import javafx.scene.layout.AnchorPane;
 import ru.hse.edu.myurachinskiy.models.keyboards.Keyboard;
 import ru.hse.edu.myurachinskiy.models.keyboards.QwertyRussianKeyboard;
 import ru.hse.edu.myurachinskiy.models.keys.Key;
+import ru.hse.edu.myurachinskiy.predicativeSystem.DictionaryPredictiveSystem;
+import ru.hse.edu.myurachinskiy.predicativeSystem.OurDictionaryPersister;
+import ru.hse.edu.myurachinskiy.predicativeSystem.PredictiveTextSystem;
+import ru.hse.edu.myurachinskiy.predicativeSystem.XMLDictionaryPersister;
 import ru.hse.edu.myurachinskiy.utils.CommandsProvider;
 
 import java.awt.*;
 import java.awt.event.InputEvent;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -23,6 +30,18 @@ public class KeyboardController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         this.keyboard = new QwertyRussianKeyboard();
         try {
+            predictiveTextSystem = DictionaryPredictiveSystem.newInstance();
+            try {
+                predictiveTextSystem.fill(OurDictionaryPersister
+                    .newInstance(new FileInputStream(new File("M:\\java HW\\ux-keyboard\\src\\main" +
+                        "\\resources\\shortdict.txt")), StandardCharsets.UTF_8));
+    
+            } catch (Exception e) {
+                System.out.println("Problems with dict");
+            }
+            if (keyboard instanceof QwertyRussianKeyboard) {
+                ((QwertyRussianKeyboard) keyboard).setPredictiveTextSystem(predictiveTextSystem);
+            }
             robot = new Robot();
             drawKeyboard();
             printText();
@@ -94,7 +113,8 @@ public class KeyboardController implements Initializable {
                 
                 currentKeyBtn.setOnMousePressed(event -> {
                     currentKey.pressKey(keyboard);
-                    text.setText(keyboard.getText());
+                    currentKeyBtn.setText(currentKey.getKey());
+                    printText();
                 });
                 
                 keyBtnList.add(currentKeyBtn);
@@ -110,6 +130,8 @@ public class KeyboardController implements Initializable {
     private AnchorPane anchorPane;
 
     private Robot robot;
+    
+    private DictionaryPredictiveSystem predictiveTextSystem;
     
     private Point cursor;
     private Keyboard keyboard;

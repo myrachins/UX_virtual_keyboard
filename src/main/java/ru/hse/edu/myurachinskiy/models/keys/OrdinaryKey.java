@@ -1,6 +1,7 @@
 package ru.hse.edu.myurachinskiy.models.keys;
 
 import ru.hse.edu.myurachinskiy.models.keyboards.Keyboard;
+import ru.hse.edu.myurachinskiy.models.keyboards.QwertyRussianKeyboard;
 
 public class OrdinaryKey extends Key {
     public OrdinaryKey(String key) {
@@ -20,9 +21,15 @@ public class OrdinaryKey extends Key {
         if (keyboard.isShiftPressed()) {
             keyboard.setText(keyboard.getText() + this.shiftedKey);
             keyboard.setLastWord(keyboard.getLastWord() + this.shiftedKey);
+            if (keyboard instanceof QwertyRussianKeyboard) {
+                ((QwertyRussianKeyboard) keyboard).changeTips();
+            }
         } else {
             keyboard.setText(keyboard.getText() + this.key);
             keyboard.setLastWord(keyboard.getLastWord() + this.key);
+            if (keyboard instanceof QwertyRussianKeyboard) {
+                ((QwertyRussianKeyboard) keyboard).changeTips();
+            }
         }
     }
 }

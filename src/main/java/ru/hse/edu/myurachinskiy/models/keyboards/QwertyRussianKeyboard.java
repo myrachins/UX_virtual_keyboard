@@ -3,11 +3,21 @@ package ru.hse.edu.myurachinskiy.models.keyboards;
 import ru.hse.edu.myurachinskiy.models.keys.CommandKey;
 import ru.hse.edu.myurachinskiy.models.keys.Key;
 import ru.hse.edu.myurachinskiy.models.keys.OrdinaryKey;
+import ru.hse.edu.myurachinskiy.models.keys.TipKey;
+import ru.hse.edu.myurachinskiy.predicativeSystem.PredictiveTextSystem;
+
+import java.util.List;
 
 public class QwertyRussianKeyboard extends Keyboard {
+	
+	private PredictiveTextSystem predictiveTextSystem;
+	
     public QwertyRussianKeyboard() {
         super();
         this.keyboard = new Key[][]{
+			{
+				new TipKey(""), new TipKey(""), new TipKey(""),
+			},
         	{
         		new CommandKey(CommandKey.COMMAND.TAB, 1),
         		new OrdinaryKey("й", "Й"), new OrdinaryKey("ц", "Ц"),
@@ -41,4 +51,35 @@ public class QwertyRussianKeyboard extends Keyboard {
 			}
         };
     }
+	
+	@Override
+	public void changeLastWordText(String newLastWord) {
+		super.changeLastWordText(newLastWord);
+		for (Key key : keyboard[0]) {
+			TipKey tipKey = (TipKey) key;
+			tipKey.setText("");
+		}
+	}
+	
+	public void changeTips() {
+    	String pattern = "";
+    	if (text.length() >= 3) {
+    		//pattern = text.substring(0, text.length() - 3) + "(?i)[а-я]{3}";
+			pattern = "["+text+"]";
+		}
+    	List<String> tips = predictiveTextSystem.getWordsByPattern(pattern);
+    	int i = 0;
+    	for (String tip : tips) {
+    		if (i < keyboard[0].length && keyboard[0][i] instanceof TipKey) {
+				TipKey tipKey = (TipKey) keyboard[0][i];
+				tipKey.setText(tip);
+			} else
+				break;
+    		i++;
+		}
+	}
+	
+	public void setPredictiveTextSystem(PredictiveTextSystem predictiveTextSystem) {
+		this.predictiveTextSystem = predictiveTextSystem;
+	}
 }
