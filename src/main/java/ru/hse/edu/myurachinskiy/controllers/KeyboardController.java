@@ -4,22 +4,21 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
+import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import ru.hse.edu.myurachinskiy.models.keyboards.Keyboard;
 import ru.hse.edu.myurachinskiy.models.keyboards.QwertyRussianKeyboard;
+import ru.hse.edu.myurachinskiy.models.keys.CommandKey;
 import ru.hse.edu.myurachinskiy.models.keys.Key;
+import ru.hse.edu.myurachinskiy.models.keys.OrdinaryKey;
 import ru.hse.edu.myurachinskiy.models.keys.TipKey;
 import ru.hse.edu.myurachinskiy.predicativeSystem.DictionaryPredictiveSystem;
 import ru.hse.edu.myurachinskiy.predicativeSystem.OurDictionaryPersister;
-import ru.hse.edu.myurachinskiy.predicativeSystem.PredictiveTextSystem;
-import ru.hse.edu.myurachinskiy.predicativeSystem.XMLDictionaryPersister;
 import ru.hse.edu.myurachinskiy.utils.CommandsProvider;
 
 import java.awt.*;
 import java.awt.event.InputEvent;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
+import java.io.*;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
@@ -44,6 +43,11 @@ public class KeyboardController implements Initializable {
                 ((QwertyRussianKeyboard) keyboard).setPredictiveTextSystem(predictiveTextSystem);
             }
             robot = new Robot();
+            
+            bufferedReaderSentences = new BufferedReader(new FileReader(new File("M:\\java HW\\ux-keyboard\\src\\main" +
+                "\\resources\\OUTPUT.txt")));
+            updateCurrentSentenceLabel();
+            
             drawKeyboard();
             printText();
 
@@ -120,6 +124,16 @@ public class KeyboardController implements Initializable {
                     currentKey.pressKey(keyboard);
                     currentKeyBtn.setText(currentKey.getKey());
                     printText();
+                    if (!sessionInProcess && !sessionEnded && (currentKey instanceof TipKey || currentKey instanceof OrdinaryKey)) {
+                        startTimeSentence = startTime = System.currentTimeMillis();
+                        sessionInProcess = true;
+                    } else if (currentKey instanceof CommandKey
+                        && ((CommandKey) currentKey).getCommand() == CommandKey.COMMAND.ENTER
+                        && sessionInProcess && !sessionEnded) {
+                        updateSpeedLabel();
+                        updateCurrentSentenceLabel();
+                        startTimeSentence = System.currentTimeMillis();
+                    }
                 });
                 
                 keyBtnList.add(currentKeyBtn);
@@ -128,15 +142,51 @@ public class KeyboardController implements Initializable {
         }
         this.anchorPane.getChildren().addAll(keyBtnList);
     }
+    
+    private void updateSpeedLabel() {
+        float currentSentenceTimeMinDelta = (System.currentTimeMillis() - startTimeSentence)/60000F;
+        float sessionTimeMinDelta = (System.currentTimeMillis() - startTime)/60000F;
+        int wordCount = currentSentence.length() - currentSentence.replaceAll(" ", "").length() + 1;
+        wordsTotal += wordCount;
+        speedLabel.setText("Words per minute in last sentence: " + wordCount / currentSentenceTimeMinDelta
+            + "   Word per minute average: " + wordsTotal / sessionTimeMinDelta);
+    }
+    
+    private void updateCurrentSentenceLabel() {
+        try {
+            if ((currentSentence = bufferedReaderSentences.readLine()) != null) {
+                nextSentenceLabel.setText("Current sentence: " + currentSentence);
+            } else {
+                currentSentence = "";
+                nextSentenceLabel.setText("That's the end of the session");
+                sessionEnded = true;
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            sessionEnded = true;
+        }
+    }
 
     @FXML
     private TextArea text;
     @FXML
     private AnchorPane anchorPane;
+    @FXML
+    private Label speedLabel;
+    @FXML
+    private Label nextSentenceLabel;
 
     private Robot robot;
     
     private DictionaryPredictiveSystem predictiveTextSystem;
+    
+    private boolean sessionInProcess = false;
+    private boolean sessionEnded = false;
+    private BufferedReader bufferedReaderSentences;
+    private int wordsTotal = 0;
+    private long startTime;
+    private long startTimeSentence;
+    private String currentSentence;
     
     private Point cursor;
     private Keyboard keyboard;

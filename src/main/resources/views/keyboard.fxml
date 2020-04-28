@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.canvas.Canvas?>
-<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextArea?>
-
 <?import javafx.scene.layout.AnchorPane?>
-<VBox xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="ru.hse.edu.myurachinskiy.controllers.KeyboardController">
-    <TextArea fx:id="text" editable="true" minHeight="50"/>
-    <AnchorPane fx:id="anchorPane" minWidth="800" minHeight="200" maxWidth="800" maxHeight="200"/>
+<?import javafx.scene.layout.VBox?>
+
+<VBox xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.172-ea" fx:controller="ru.hse.edu.myurachinskiy.controllers.KeyboardController">
+    <Label fx:id="nextSentenceLabel" alignment="CENTER" contentDisplay="CENTER" prefHeight="50.0" prefWidth="800" text="Current sentence: " textAlignment="CENTER" />
+    <Label fx:id="speedLabel" alignment="CENTER" contentDisplay="CENTER" prefHeight="50.0" prefWidth="800" textAlignment="CENTER" />
+    <TextArea fx:id="text" editable="true" minHeight="50" />
+    <AnchorPane fx:id="anchorPane" maxHeight="200" maxWidth="800" minHeight="200" minWidth="800" />
 </VBox>

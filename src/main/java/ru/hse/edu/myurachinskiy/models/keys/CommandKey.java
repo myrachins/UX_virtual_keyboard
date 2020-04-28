@@ -39,7 +39,11 @@ public class CommandKey extends Key {
         }
     }
     private COMMAND command;
-
+    
+    public COMMAND getCommand() {
+        return command;
+    }
+    
     public enum COMMAND {
         BACKSPACE("BACKSPACE"), TAB("TAB"), CTRL("CTRL"), SHIFT("SHIFT"), ENTER("ENTER"), SPACE("SPACE");
 
@@ -49,4 +53,5 @@ public class CommandKey extends Key {
 
         String command;
     }
+    
 }
